@@ -8,12 +8,11 @@ import (
 const ProgramName = "go-build-variables"
 
 var (
-	version = "0.0.1"
-	build   = "000000"
+	version  = "0.0.1"
+	build    = "000000"
 )
 
 func main() {
-
 	if len(os.Args) < 2 {
 		fmt.Printf("%s usage:\n", ProgramName)
 		fmt.Printf("\t-v, --version\t print vesrsion and build\n")
