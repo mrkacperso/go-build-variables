@@ -3,13 +3,13 @@
 function print_usage {
   printf "Usage: build.sh -v [-e] SRC_FILE\n"
   printf "\t-v\tProvide binary version, example: -v 0.0.1\n"
-  printf "\t-e\tProvide target environment, any value different than \"release\" will result in production build, example: -v release\n"
+  printf "\t-e\tProvide target environment, any value different than \"development\" will result in release build, example: -v release\n"
   printf "\t-o\tOutput binary filename\n"
   printf "\t-h\tPrint help and exit\n"
   exit 1
 }
 
-# Iterate trough short arguments list and process arguments
+# Iterate through arguments list and process arguments
 while getopts "v:e:o:h" o; do
     case "${o}" in
         v)
@@ -55,14 +55,14 @@ fi
 
 # Any value other than "development" will produce production build.
 # This is to prevent building and accidental release of development builds which can be unsafe or unstable.
-# Here we are appending \"rc-\" to version number and setting output filename to , but it can be for example
-# setting another variable to indicate development build or building with different flags.
-if [[ "$ENV" == "release" ]]
+# Here we are appending \"rc-\" to version number and setting output filename to indicate if this is release or dev build,
+# but it can be more here, for example setting another variable to indicate development build or building with different flags.
+if [[ "$ENV" == "development" ]]
 then
-    OUTPUT_FILE="$OUTPUT_FILE-stable"
-else
     VERSION="rc-$VERSION"
     OUTPUT_FILE="$OUTPUT_FILE-development"
+else
+    OUTPUT_FILE="$OUTPUT_FILE-stable"
 fi
 
 
@@ -74,6 +74,6 @@ set -euo pipefail
 BUILD_HASH=$(git log --pretty=format:"%h" -n 1|head -1)
 
 echo "Building: $SRC_FILE version: $VERSION from commit: $BUILD_HASH to file: $OUTPUT_FILE"
-go build -ldflags "-X main.version=$VERSION -X main.build=$BUILD_HASH" -o "$OUTPUT_FILE" "$SRC_FILE"
+go build -ldflags "-X main.Version=$VERSION -X main.Build=$BUILD_HASH" -o "$OUTPUT_FILE" "$SRC_FILE"
 
 
