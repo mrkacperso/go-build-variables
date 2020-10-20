@@ -8,8 +8,8 @@ import (
 const ProgramName = "go-build-variables"
 
 var (
-	version  = "0.0.1"
-	build    = "000000"
+	Version  = "0.0.1"
+	Build    = "000000"
 )
 
 func main() {
@@ -21,6 +21,6 @@ func main() {
 
 	arg := os.Args[1]
 	if arg == "-v" || arg == "--version\n" {
-		fmt.Printf("%s version %s, build: %s\n", ProgramName, version, build)
+		fmt.Printf("%s version %s, build: %s\n", ProgramName, Version, Build)
 	}
 }
